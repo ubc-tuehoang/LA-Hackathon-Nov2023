@@ -6,12 +6,10 @@ import requests
 
 
 def _bardai(json_data):
-    ##current_time_with_milliseconds = datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")[:-3]  # Include milliseconds
-    ##json_data["key1"] = current_time_with_milliseconds
     
     queryString = json_data["prime1"]
     ##Secure-1PSID
-    token = ''
+    token = '[Secure-1PSID]'
     bard = Bard(token=token)
 
     out = bard.get_answer(queryString)['content']
@@ -21,13 +19,8 @@ def _bardai(json_data):
     return json_data
 
 def _openai(json_data):
-    current_time_with_milliseconds = datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")[:-3]  # Include milliseconds
-    json_data["key2"] = current_time_with_milliseconds
-
 
     url = "https://api.openai.com/v1/chat/completions"
-
-    ##"model": "gpt-3.5-turbo", ##other model
         
     payload_json = {
     "model": "gpt-4",
@@ -46,7 +39,7 @@ def _openai(json_data):
 
     headers = {
     'Content-Type': 'application/json',
-    'Authorization': ''
+    'Authorization': '[OpenAI API Key]'
     }
 
     ##remove request for now, since Autho API key is no longer valid.  
@@ -82,7 +75,10 @@ for i in range(3):
 
     # Call OpenAI with JSON data and retrieve the result
     openai_json_data["system"] = "You are University advisor at UBC, verify the following information and offer additional suggestions for advanced studies"
-    openai_json_data["prime1"] = result_from_BardAI["content1"]
+    if i == 0:
+        openai_json_data["prime1"] = bard_json_data["prime1"]
+    else:    
+        openai_json_data["prime1"] = result_from_BardAI["content1"]
     result_from_OpenAI = _openai(openai_json_data)
     print(f"Result from OpenAI[{i+1}]:")
     print(json.dumps(result_from_OpenAI, indent=2))
