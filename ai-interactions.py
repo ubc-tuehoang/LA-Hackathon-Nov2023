@@ -34,7 +34,7 @@ def _openai(json_data):
     "messages": [
         {
         "role": "system",
-        "content": "You are university advisor."
+        "content": "You are University advisor at UBC, verify the following information and offer additional suggestions for advanced studies:"
         },
         {
         "role": "user",
